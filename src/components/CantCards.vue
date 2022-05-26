@@ -1,10 +1,10 @@
 <template>
     <div class="card cant-cards">
         <div class="card-header">
-            <div class="card-header-title"> {{titulo}}</div>
+            <div class="card-header-title"> {{title}}</div>
         </div>
         <div class="card-content cant">
-            {{contenido}}
+            {{content}}
         </div>
     </div>
 </template>
@@ -13,9 +13,7 @@
 
 export default{
     name: 'Cards',
-    props: [ 'contenido', 'titulo'],
-    data:[
-    ]
+    props: [ 'content', 'title'],
 
 }
 </script>

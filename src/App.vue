@@ -2,9 +2,8 @@
   <div id="app">
       <top-bar/>
       <div class="d-flex">
-       <menu-lateral/>
-      <router-view />
-
+        <menu-lateral/>
+        <router-view />
       </div>
       
   </div>
@@ -17,8 +16,16 @@ import MenuLateral from './components/Menu.vue'
 export default {
   components: {
     TopBar,
-    MenuLateral
+    MenuLateral,
+    
+  },
+  data(){
+    return {
+                isLoading: false,
+                isFullPage: true
+            }
   }
+  
 }
 </script>
 

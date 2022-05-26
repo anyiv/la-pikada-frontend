@@ -21,13 +21,13 @@
                     <b-menu class="is-custom-mobile">
                         <b-menu-list label="Menu">
                             <router-link to="/">
-                                <b-menu-item icon="information-outline" label="Inicio" ></b-menu-item>
+                                <b-menu-item icon="information-outline" activable label="Inicio" ></b-menu-item>
                             </router-link>
                             <router-link to="/products"> 
-                                <b-menu-item icon="settings" label="Productos" ></b-menu-item>
+                                <b-menu-item icon="settings" activable label="Ventas" ></b-menu-item>
                             </router-link>
                             <router-link to="/personal">
-                                <b-menu-item icon="account" label="Personal">
+                                <b-menu-item icon="account"  activable label="Personal">
                                 </b-menu-item>
                             </router-link>
                         </b-menu-list>
@@ -44,10 +44,12 @@
 export default {
   data() {
     return {
-      expandOnHover: false,
-      expandWithDelay: false,
-      mobile: "reduce",
-      reduce: false
+        isActive: true,
+
+        expandOnHover: false,
+        expandWithDelay: false,
+        mobile: "reduce",
+        reduce: false
     };
   }
 };
@@ -115,4 +117,6 @@ export default {
 	 overflow: hidden;
 	 text-overflow: ellipsis;
 }
+
+
 </style>

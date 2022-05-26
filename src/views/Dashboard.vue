@@ -2,11 +2,8 @@
     <div class="columns margin">
         <div class="column">
             <div class="columns">
-                <div class="column  is-one-quarter">
-                    <cards :titulo="20" :contenido="20" />
-                </div>
-                <div class="column  is-one-quarter">
-                    <cards :contenido="20" :titulo="20" />
+                <div class="column  is-one-quarter"  v-for="item in arrayCantReports" :key="item.id">
+                    <cards :title=item.name :content=item.cant />
                 </div>
             </div>
             <div class="card list-card" >
@@ -16,40 +13,48 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <the-table />
+                    <the-table :data=arraySales :columns=columns />
                 </div>
             </div>
             <div class="columns">
-                <div class="column  is-half">
+                <div class="column is-half">
                     <div class="card cards-blue">
                         <div class="card-header">
-                            <div class="card-header-title ingress-title is-centered"> Ingreso total</div>
+                            <div class="card-header-title income-title is-centered"> Ingreso total</div>
                         </div>
                         <div class="card-content">
-                            <p class="label-dates">Fecha la primera venta registrada: </p>
-                            <p class="label-dates">Fecha la última venta registrada: </p>
-                            <p class="ingress-amount">20000 </p>
+                            <p class="label-dates">Fecha de la primera venta registrada: {{income.inicial_date}} </p>
+                            <p class="label-dates">Fecha de la última venta registrada: {{income.final_date}} </p>
+                            <p class="income-amount"> ${{income.amount}} </p>
                         </div>
                     </div>
                 </div>
-                <div class="column  is-half">
+                <hr>
+                <div class="column is-half">
                     <div class="card cards-blue">
                         <div class="card-header">
-                            <div class="card-header-title ingress-title is-centered"> Ingreso total  por rango</div>
+                            <div class="card-header-title income-title is-centered"> Ingreso total  por rango de fechas</div>
                         </div>
                         <div class="card-content cant">
-                            <div class="columns">
-                                <div class="column is-12"> 
-                                    <b-field label="Selecciona un rango de fechas">
-                                        <b-datepicker
-                                            placeholder="Click para seleccionar..."
-                                            v-model="dates"
-                                            range>
-                                        </b-datepicker>
-                                    </b-field>
-                                    <p class="ingress-amount"> 20000 </p>
-                                </div>  
-                            </div>
+                            <form>
+                                <div class="columns">
+                                    <div class="column is-12"> 
+                                        <b-field label="Selecciona un rango de fechas">
+                                            <b-datepicker
+                                                placeholder="Click para seleccionar..."
+                                                v-model="dates"
+                                                range>
+                                            </b-datepicker>
+                                        </b-field>
+                                        <div class="buttons">
+                                            <b-button type="sumbit" @click="incomeByDate">Buscar</b-button>
+                                        </div>
+                                        <div class="income-amount" v-if="incomeDate.status"> ${{incomeDate.amount}} </div>
+                                        <div class="income-msg" v-else-if="incomeDate.status == false"> ¡Lo siento! No hay ventas dentro de ese rango de fechas </div>
+                                        <div class="income-amount" v-else> $0 </div>
+                                    </div>  
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -73,22 +78,119 @@ export default{
     data() {
         return {
             dates: [],
-            arraySales: []
+            arraySales: [],
+            arrayCantReports: [],
+            income: {},
+            incomeDate: {},
+            columns: [
+                {
+                    field: 'table',
+                    label: 'Mesa',
+                    width: '100',
+                        numeric: true,
+                        searchable: true,
+                        centered: true
+                    },
+                    {
+                        field: 'zone',
+                        label: 'Zona',
+                        searchable: true,
+                        centered: true
+                    },
+                    {
+                        field: 'diners',
+                        label: 'Comensales',
+                        searchable: true,
+                        centered: true
+                    },
+                    {
+                        field: 'nro_products',
+                        label: 'Cant de productos',
+                        searchable: true,
+                        centered: true
+                    },
+                    {
+                        field: 'total',
+                        label: 'Total',
+                        searchable: true,
+                        centered: true
+                    },
+                    {
+                        field: 'date',
+                        label: 'Fecha de cierre',
+                        searchable: true,
+                        centered: true
+                    }
+                ],
+                isFullPage: true,
         }
 
     },
     async mounted() {
-    await this.getsales()
+    await this.getCantReports()
+    await this.getSales()
+    await this.getTotalIncome()
     },
     methods:{
-        async getsales(){
+        async getCantReports(){
             try {
-                // const data = await axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-                // this.arraySales = data
+                
+                await axios.get('https://la-pikada-backend.herokuapp.com/api/cant-reports')
+                            .then(response => {
+                                this.arrayCantReports = response.data
+                            })
+                this.open()
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
+        async getSales(){
+            try {
+                await axios.get('https://la-pikada-backend.herokuapp.com/api/list-sales')
+                .then( response => {
+                    this.arraySales = response.data
+                })
+                
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getTotalIncome(){
+            try {
+                await axios.get('https://la-pikada-backend.herokuapp.com/api/total-amount')
+                .then( response =>{
+                    this.income = response.data
+                })
+
+            this.income.amount = this.income.amount.toLocaleString('en-US');
+            this.income.inicial_date = this.income.inicial_date.toLocaleString('en-US');
+            this.income.final_date = this.income.final_date.toLocaleString('en-US');
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async incomeByDate(){
+            try {
+                this.open()
+                const initial_date = this.dates[0].toISOString().slice(0, 10)
+                const final_date = this.dates[1].toISOString().slice(0, 10)
+                await axios.post(`https://la-pikada-backend.herokuapp.com/api/income-by-date-range?initial_date=${initial_date}&final_date=${final_date}`)
+                            .then(response=>{
+                                this.incomeDate = response.data
+                            })
+                console.log(this.incomeDate)
+            this.incomeDate.amount = this.incomeDate.amount.toLocaleString('en-US');
+            
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        open() {
+                const loadingComponent = this.$buefy.loading.open({
+                    container: this.isFullPage ? null : this.$refs.element.$el
+                })
+                setTimeout(() => loadingComponent.close(),4 * 1000)
+            }
     }
 }
 </script>
@@ -103,7 +205,7 @@ export default{
 .cards-blue{
     background-color: #D5E5E2;
 }
-.ingress-title{
+.income-title{
     font-size: 1.5em;
 }
 .list-title{
@@ -116,18 +218,23 @@ export default{
     border-style: solid;
     border-color: #E3A9A5;
 }
-.ingress-amount{
+.income-amount{
     font-size: 3em;
     text-align: center;
 }
-
+.income-msg{
+    font-size: 150%;
+    text-align: center;
+    font-weight: 400;
+}
 .label-dates{
     font-size: 100%;
     font-weight: 500;
 }
 
-.prueba{
-    font-size: 3em;
+.title-dates{
+    font-size: 100%;
+    font-weight: 500;
     text-align: center;
 }
 </style>
