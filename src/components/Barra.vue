@@ -2,9 +2,9 @@
     <b-navbar class="top">
         <template #brand>
             <b-navbar-item >
-                <img
-                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                    alt="Lightweight UI components for Vue.js based on Bulma"
+                <img class="sizes"
+                    src="https://i.imgur.com/wsb5nhT.png"
+                    alt="Some logo i guess"
                 >
             </b-navbar-item>
         </template>
@@ -50,5 +50,9 @@ export default {
 <style scoped>
 .top{
     background-color: #54B8B6;
+}
+.sizes{
+    height: 40px;
+    width: 40px;
 }
 </style>

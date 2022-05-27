@@ -13,23 +13,17 @@
             >
                 <div class="p-1">
                     <div class="block">
-                    <img
-                        src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                        alt="Lightweight UI components for Vue.js based on Bulma"
+                    <img class="sizes"
+                        src="https://i.imgur.com/wsb5nhT.png"
+                        alt="Some logo i guess"
                     />
                     </div>
                     <b-menu class="is-custom-mobile">
                         <b-menu-list label="Menu">
-                            <router-link to="/">
-                                <b-menu-item icon="information-outline" activable label="Inicio" ></b-menu-item>
-                            </router-link>
-                            <router-link to="/products"> 
-                                <b-menu-item icon="settings" activable label="Ventas" ></b-menu-item>
-                            </router-link>
-                            <router-link to="/personal">
-                                <b-menu-item icon="account"  activable label="Personal">
-                                </b-menu-item>
-                            </router-link>
+                            <b-menu-item icon="information-outline" label="Inicio" tag="router-link" to="/"></b-menu-item>
+                            <b-menu-item icon="settings" label="Ventas"  tag="router-link" to="/products"></b-menu-item>
+                            <b-menu-item icon="account" label="Personal"  tag="router-link" to="/personal">
+                            </b-menu-item> 
                         </b-menu-list>
                     </b-menu>
                 </div>
@@ -118,5 +112,14 @@ export default {
 	 text-overflow: ellipsis;
 }
 
-
+a.router-link-exact-active {
+    font-weight: bold !important;
+    color: #FBF3F3 !important;
+    border-radius: 2px;
+    background-color: #54B8B6;
+}
+.sizes{
+    height: 150px;
+    width: 150px;
+}
 </style>

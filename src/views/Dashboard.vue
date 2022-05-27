@@ -46,7 +46,7 @@
                                                 range>
                                             </b-datepicker>
                                         </b-field>
-                                        <div class="buttons">
+                                        <div class="buttons " >
                                             <b-button type="sumbit" @click="incomeByDate">Buscar</b-button>
                                         </div>
                                         <div class="income-amount" v-if="incomeDate.status"> ${{incomeDate.amount}} </div>
@@ -237,4 +237,5 @@ export default{
     font-weight: 500;
     text-align: center;
 }
+
 </style>
